@@ -1,0 +1,436 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[margin=1.0in]{geometry} % To set margins
+\usepackage{amsmath}  % This allows me to use the align functionality.
+                      % If you find yourself trying to replicate
+                      % something you found online, ensure you're
+                      % loading the necessary packages!
+\usepackage{amsfonts} % Math font
+\usepackage{fancyvrb}
+\usepackage{hyperref} % For including hyperlinks
+\usepackage[shortlabels]{enumitem}% For enumerated lists with labels specified
+                                  % We had to run tlmgr_install("enumitem") in R
+\usepackage{float}    % For telling R where to put a table/figure
+\usepackage{natbib}        %For the bibliography
+\bibliographystyle{apalike}%For the bibliography
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\cite{Kasdin25} show that dopamine in the brains of young zebra finches acts as 
+a learning signal, increasing when they sing closer to their adult song and 
+decreasing when they sing further away, effectively guiding their vocal 
+development through trial-and-error. This suggests that complex natural 
+behaviors, like learning to sing, are shaped by dopamine-driven reinforcement 
+learning, similar to how artificial intelligence learns. You can find the 
+paper at this link:
+\href{https://www.nature.com/articles/s41586-025-08729-1}{{https://www.nature.com/articles/s41586-025-08729-1}.}.
+
+
+
+
+Note they measure dopamine using fibre photometry, changes in the fluorescence
+indicate dopamine changes in realtime. Their specific measurement considers 
+changes in flourescence in 100-ms windows between 200 and 300 ms from the start 
+of singing, averaged across development.
+
+\begin{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONDUCT A POWER ANALYSIS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Using the \texttt{pwr} package for \texttt{R} \citep{pwr},
+conduct a power analysis. How many observations would the researchers 
+need to detect a moderate-to-large effect ($d=0.65$) when using 
+$\alpha=0.05$ and default power (0.80) for a two-sided one sample 
+$t$ test. \\
+\texttt{*Response: n should be 20/21.*}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Perform a power analysis for a one-sample t-test with a medium effect size (d = 0.65)}
+\hlcom{# Desired power = 0.80, two-sided alternative hypothesis}
+\hlkwd{pwr.t.test}\hldef{(}\hlkwc{d} \hldef{=} \hlnum{0.65}\hldef{,}
+           \hlkwc{power} \hldef{=} \hlnum{0.80}\hldef{,}
+           \hlkwc{type} \hldef{=} \hlsng{"one.sample"}\hldef{,}
+           \hlkwc{alternative} \hldef{=} \hlsng{"two.sided"}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## 
+##      One-sample t test power calculation 
+## 
+##               n = 20.58039
+##               d = 0.65
+##       sig.level = 0.05
+##           power = 0.8
+##     alternative = two.sided
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COLLECT DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Click the link to go to the paper. Find the source data for 
+Figure 2. Download the Excel file. Describe what you needed to
+do to collect the data for Figure 2(g). Note that you only need the 
+\texttt{closer\_vals} and \texttt{further\_vals}. Ensure to 
+\texttt{mutate()} the data to get a difference 
+(e.g., \texttt{closer\_vals - further\_vals}).
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Load data from CSV files for "Closer" and "Farther" conditions}
+\hldef{Closer.dat} \hlkwb{<-} \hlkwd{read_csv}\hldef{(}\hlsng{"C_vals.csv"}\hldef{)}
+\hldef{Farther.dat} \hlkwb{<-} \hlkwd{read_csv}\hldef{(}\hlsng{"F_vals.csv"}\hldef{)}
+
+\hlcom{# Combine the data into a single tibble and calculate the difference between Closer and Farther values}
+\hldef{full.dat} \hlkwb{<-} \hlkwd{tibble}\hldef{(}
+  \hlkwc{Farther} \hldef{= Farther.dat}\hlopt{$}\hldef{data,}
+  \hlkwc{Closer} \hldef{= Closer.dat}\hlopt{$}\hldef{data}
+\hldef{)} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}
+    \hlkwc{Difference} \hldef{= Closer} \hlopt{-} \hldef{Farther} \hlcom{# Calculate the difference}
+  \hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SUMMARIZE DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Summarize the data.
+\begin{enumerate}
+  \item Summarize the further data. Do the data suggest that
+   dopamine in the brains of young zebra finches decreases when
+   they sing further away? \\
+\texttt{*Response: The data below suggests that the dopamine in the brains of young zebra finches does in fact decrease wwhen they sing further away.*}
+   \item Summarize the closer data. Do the data suggest that
+   dopamine in the brains of young zebra finches increases when
+   they sing closer to their adult song? \\
+\texttt{*Response: The data below suggests that the dopamine in the brains of young zebra finches does in fact increase when they sing closer.*}
+  \item Summarize the paired differences. Do the data suggest
+  that there is a difference between dopamine in the brains of
+  young zebra finches when they sing further away compared to 
+  closer to their adult song? \\
+\texttt{*Response: The data below suggests that there exists a difference in the brains of young zebra finches singing closer in contrast to singing further away, as the plot is more skewed towards greater dopamine when singing closer than lower dopamine when singing farther.*} \\
+
+  \texttt{Solution to a, b, and c:}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Reshape data to a long format for plotting}
+\hldef{plot.full.dat} \hlkwb{<-} \hlkwd{pivot_longer}\hldef{(}
+  \hldef{full.dat,}
+  \hlkwc{cols} \hldef{=} \hlkwd{everything}\hldef{(),}       \hlcom{# Reshape all columns to long format}
+  \hlkwc{names_to} \hldef{=} \hlsng{"type"}\hldef{,}         \hlcom{# Column names become the 'type' variable}
+  \hlkwc{values_to} \hldef{=} \hlsng{"values"}       \hlcom{# Column values become the 'values' variable}
+\hldef{)}
+
+\hlcom{# Create a boxplot of the 'Closer' and 'Farther' values}
+\hlkwd{ggplot}\hldef{(}\hlkwc{data} \hldef{= plot.full.dat)} \hlopt{+}
+  \hlkwd{geom_boxplot}\hldef{(}\hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= type,} \hlkwc{y} \hldef{= values,} \hlkwc{color} \hldef{= type),} \hlkwc{show.legend} \hldef{=} \hlnum{FALSE}\hldef{)} \hlopt{+} \hlcom{# Boxplot with color by 'type'}
+  \hlkwd{coord_flip}\hldef{()} \hlopt{+} \hlcom{# Flip axes for horizontal boxplot}
+  \hlkwd{theme_bw}\hldef{()} \hlopt{+} \hlcom{# Use black-and-white theme}
+  \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlsng{"Syllables"}\hldef{,} \hlcom{# Label the x-axis}
+       \hlkwc{y} \hldef{=} \hlkwd{expression}\hldef{(Delta}\hlopt{*}\hldef{F}\hlopt{/}\hldef{F}\hlopt{~}\hlsng{"(%)"}\hldef{))} \hlopt{+} \hlcom{# Label the y-axis with a mathematical expression}
+  \hlkwd{geom_hline}\hldef{(}\hlkwc{yintercept} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{linetype} \hldef{=} \hlsng{"dashed"}\hldef{)} \hlcom{# Add a dashed horizontal line at y = 0}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+\end{knitrout}
+  
+  \item \textbf{Optional Challenge:} Can you reproduce Figure 2(g)?
+  Note that the you can use \texttt{geom\_errorbar()} to plot
+  the range created by adding the mean $\pm$ one standard deviation.
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Calculate mean and standard deviation for 'Closer' and 'Farther', then filter the data}
+\hldef{plot.full.dat.error} \hlkwb{<-} \hldef{plot.full.dat} \hlopt{%>%}
+  \hlkwd{group_by}\hldef{(type)} \hlopt{%>%}
+  \hlkwd{summarize}\hldef{(}\hlkwc{mean_value} \hldef{=} \hlkwd{mean}\hldef{(values),} \hlcom{# Mean of values}
+            \hlkwc{sd_value} \hldef{=} \hlkwd{sd}\hldef{(values))} \hlopt{%>%} \hlcom{# Standard deviation of values}
+  \hlkwd{filter}\hldef{(type} \hlopt{%in%} \hlkwd{c}\hldef{(}\hlsng{"Closer"}\hldef{,} \hlsng{"Farther"}\hldef{))} \hlcom{# Filter for Closer and Farther types}
+
+\hlcom{# Modify the data to add a 'pair_group' variable for pairing data points}
+\hldef{plot.full.dat} \hlkwb{<-} \hldef{plot.full.dat} \hlopt{%>%}
+  \hlkwd{filter}\hldef{(type} \hlopt{%in%} \hlkwd{c}\hldef{(}\hlsng{"Closer"}\hldef{,} \hlsng{"Farther"}\hldef{))} \hlopt{%>%}
+  \hlkwd{mutate}\hldef{(}\hlkwc{pair_group} \hldef{=} \hlkwd{rep}\hldef{(}\hlnum{1}\hlopt{:}\hlnum{25}\hldef{,} \hlkwc{each} \hldef{=} \hlnum{2}\hldef{))} \hlcom{# Create a group for pairs of data}
+
+\hlcom{# Create a scatterplot with error bars and mean line for 'Closer' and 'Farther'}
+\hlkwd{ggplot}\hldef{(}\hlkwc{data} \hldef{= plot.full.dat)} \hlopt{+}
+  \hlkwd{geom_point}\hldef{(}\hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= type,} \hlkwc{y} \hldef{= values,} \hlkwc{color} \hldef{= type),} \hlkwc{shape} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{show.legend} \hldef{=} \hlnum{FALSE}\hldef{)} \hlopt{+} \hlcom{# Scatter points}
+  \hlkwd{geom_line}\hldef{(}\hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= type,} \hlkwc{y} \hldef{= values,} \hlkwc{group} \hldef{= pair_group),} \hlkwc{alpha} \hldef{=} \hlnum{0.1}\hldef{)} \hlopt{+} \hlcom{# Lines connecting paired points}
+  \hlkwd{geom_errorbar}\hldef{(}\hlkwc{data} \hldef{= plot.full.dat.error,} \hlkwd{aes}\hldef{(}
+    \hlkwc{x} \hldef{= type,}
+    \hlkwc{ymin} \hldef{= mean_value} \hlopt{-} \hldef{sd_value,}  \hlcom{# Lower error bound}
+    \hlkwc{ymax} \hldef{= mean_value} \hlopt{+} \hldef{sd_value}  \hlcom{# Upper error bound}
+  \hldef{),} \hlkwc{width} \hldef{=} \hlnum{0.1}\hldef{,}
+  \hlkwc{size} \hldef{=} \hlnum{.7}\hldef{)} \hlopt{+} \hlcom{# Error bars}
+  \hlkwd{geom_line}\hldef{(}\hlkwc{data} \hldef{= plot.full.dat.error,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= type,} \hlkwc{y} \hldef{= mean_value,} \hlkwc{group} \hldef{=} \hlnum{1}\hldef{),} \hlkwc{size} \hldef{=} \hlnum{.8}\hldef{)} \hlopt{+} \hlcom{# Mean line}
+  \hlkwd{geom_hline}\hldef{(}\hlkwc{yintercept} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{linetype} \hldef{=} \hlsng{"dashed"}\hldef{)} \hlopt{+} \hlcom{# Horizontal line at y = 0}
+  \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlkwa{NULL}\hldef{,} \hlcom{# Remove x-axis label}
+       \hlkwc{y} \hldef{=} \hlkwd{expression}\hldef{(Delta}\hlopt{*}\hldef{F}\hlopt{/}\hldef{F}\hlopt{~}\hlsng{"(%)"}\hldef{))} \hlopt{+} \hlcom{# Y-axis label}
+  \hlkwd{ylim}\hldef{(}\hlkwd{c}\hldef{(}\hlopt{-}\hlnum{0.6}\hldef{,} \hlnum{0.4}\hldef{))} \hlopt{+} \hlcom{# Set y-axis limits}
+  \hlkwd{scale_x_discrete}\hldef{(}\hlkwc{limits} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Farther"}\hldef{,} \hlsng{"Closer"}\hldef{))} \hlopt{+} \hlcom{# Set x-axis categories}
+  \hlkwd{annotate}\hldef{(}\hlsng{"segment"}\hldef{,} \hlkwc{x} \hldef{=} \hlsng{"Farther"}\hldef{,} \hlkwc{y} \hldef{=} \hlnum{0.38}\hldef{,} \hlkwc{xend} \hldef{=} \hlsng{"Closer"}\hldef{,} \hlkwc{yend} \hldef{=} \hlnum{0.38}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{.8}\hldef{)} \hlopt{+} \hlcom{# Line annotation}
+  \hlkwd{annotate}\hldef{(}\hlsng{"text"}\hldef{,} \hlkwc{x} \hldef{=} \hlnum{1.5}\hldef{,} \hlkwc{y} \hldef{=} \hlnum{.4}\hldef{,} \hlkwc{label} \hldef{=} \hlsng{"***"}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{4}\hldef{)} \hlcom{# Text annotation }
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\end{knitrout}
+  
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONDUCT THE TESTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Conduct the inferences they do in the paper. Make sure to report the results
+a little more comprehensively -- that is your parenthetical should look something
+like: ($t=23.99$, $p<0.0001$; $g=1.34$; 95\% CI: 4.43, 4.60).\\
+\textbf{Note:} Your numbers may vary slightly as they performed some unclear
+correction of their $p$-values. I'm waiting to hear back from them via email!
+\begin{enumerate}
+  \item ``The close responses differed significantly from 0 ($p=1.63 \times 10^{-8}$).''\\
+\texttt{*Response: ($t=8.30$; $p<0.0001$; $g=1.61$; 95\% CI: 0.11, 0.19)*}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Perform t-test for 'Closer' data, testing if the mean is 0 (for CI)}
+\hlkwd{t.test}\hldef{(full.dat}\hlopt{$}\hldef{Closer,}
+       \hlkwc{mu} \hldef{=} \hlnum{0}\hldef{,}
+       \hlkwc{alternative} \hldef{=} \hlsng{'two.sided'}\hldef{)}
+
+\hlcom{# Perform t-test for 'Closer' data, testing if the mean is greater than 0}
+\hlkwd{t.test}\hldef{(full.dat}\hlopt{$}\hldef{Closer,}
+       \hlkwc{mu} \hldef{=} \hlnum{0} \hldef{,}
+       \hlkwc{alternative} \hldef{=} \hlsng{'greater'}\hldef{)}
+
+\hlcom{# Calculate Hedges' g for the 'Closer' data}
+\hlkwd{hedges_g}\hldef{(full.dat}\hlopt{$}\hldef{Closer)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  \item ``The far responses differed significantly from 0 ($p=5.17 \times 10^{-8}$).''\\
+\texttt{*Response: ($t=-7.71$; $p<0.0001$; $g=-1.51$; 95\% CI: -0.25, -0.14)*}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Perform t-test for 'Farther' data, testing if the mean is 0 (for CI)}
+\hlkwd{t.test}\hldef{(full.dat}\hlopt{$}\hldef{Farther,}
+       \hlkwc{mu} \hldef{=} \hlnum{0}\hldef{,}
+       \hlkwc{alternative} \hldef{=} \hlsng{'two.sided'}\hldef{)}
+
+\hlcom{# Perform t-test for 'Farther' data, testing if the mean is less than 0}
+\hlkwd{t.test}\hldef{(full.dat}\hlopt{$}\hldef{Farther,}
+       \hlkwc{mu} \hldef{=} \hlnum{0}\hldef{,}
+       \hlkwc{alternative} \hldef{=} \hlsng{'less'}\hldef{)}
+
+\hlcom{# Calculate Hedges' g for the 'Farther' data}
+\hlkwd{hedges_g}\hldef{(full.dat}\hlopt{$}\hldef{Farther)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  \item ``The difference between populations was significant ($p=1.04 \times10^{-8}$).''\\
+\texttt{*Response: ($t=8.51$; $p<0.0001$; $g=1.65$; 95\% CI: 0.27, 0.44)*}
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Perform t-test for the 'Difference' data, testing if the mean is 0}
+\hlkwd{t.test}\hldef{(full.dat}\hlopt{$}\hldef{Difference,}
+       \hlkwc{mu} \hldef{=} \hlnum{0}\hldef{,}
+       \hlkwc{alternative} \hldef{=} \hlsng{'two.sided'}\hldef{)}
+
+\hlcom{# Calculate Hedges' g for the 'Difference' data}
+\hlkwd{hedges_g}\hldef{(full.dat}\hlopt{$}\hldef{Difference)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONDUCT THE TESTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\item Reverse engineer the hypothesis test plot from Lecture 20 to create accurate
+hypothesis testing plots for each part of the previous question.
+\begin{enumerate}
+  \item Question 4, part(a).
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Set t-statistic breaks and calculate corresponding x-bar breaks}
+\hldef{t.breaks} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{20}\hldef{,} \hlopt{-}\hlnum{10}\hldef{,} \hlnum{10}\hldef{,} \hlnum{20}\hldef{,}
+              \hlkwd{qt}\hldef{(}\hlnum{1} \hlopt{-} \hlnum{0.05}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{),}
+              \hlnum{8.3024}\hldef{)}
+\hldef{xbar.breaks} \hlkwb{<-} \hldef{t.breaks} \hlopt{*} \hlkwd{sd}\hldef{(full.dat}\hlopt{$}\hldef{Closer)} \hlopt{/} \hlkwd{sqrt}\hldef{(}\hlkwd{length}\hldef{(full.dat}\hlopt{$}\hldef{Closer))}
+
+\hlcom{# Create a plot with t-distribution, resampled t-statistics, and p-value areas for Closer}
+\hlkwd{ggplot}\hldef{()} \hlopt{+}
+  \hlkwd{geom_line}\hldef{(}\hlkwc{data} \hldef{= t.dist.dat,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{y} \hldef{= ts,} \hlkwc{color} \hldef{=} \hlsng{"Null"}\hldef{))} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{>=} \hlkwd{qt}\hldef{(}\hlnum{1} \hlopt{-} \hlnum{0.05}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{)),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"Rejection Region"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.5}\hldef{)} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{>=} \hlnum{8.3024}\hldef{),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"p-value"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.25}\hldef{)} \hlopt{+}
+  \hlkwd{geom_density}\hldef{(}\hlkwc{data} \hldef{= resamples.Closer,}
+               \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= t.stat,} \hlkwc{color} \hldef{=} \hlsng{"Resampled"}\hldef{))} \hlopt{+}
+  \hlkwd{geom_hline}\hldef{(}\hlkwc{yintercept} \hldef{=} \hlnum{0}\hldef{)} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlsng{""}\hldef{,} \hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"black"}\hldef{,} \hlsng{"red"}\hldef{))} \hlopt{+}
+  \hlkwd{scale_fill_manual}\hldef{(}\hlsng{""}\hldef{,} \hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"lightblue"}\hldef{,} \hlsng{"yellow"}\hldef{))} \hlopt{+}
+  \hlkwd{theme_bw}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"bottom"}\hldef{)} \hlopt{+}
+  \hlkwd{ggtitle}\hldef{(}\hlsng{"T-Test for the Closer Responses Population Mean"}\hldef{,}
+          \hlkwc{subtitle} \hldef{=} \hlkwd{bquote}\hldef{(H[}\hlnum{0}\hldef{]}\hlopt{:}\hldef{mu[X]} \hlopt{==} \hlnum{0} \hlopt{~} \hlsng{"vs"} \hlopt{~} \hldef{H[a]}\hlopt{:}\hldef{mu[X]} \hlopt{>} \hlnum{0}\hldef{))} \hlopt{+}
+  \hlkwd{scale_x_continuous}\hldef{(}\hlsng{"t"}\hldef{,}
+                     \hlkwc{breaks} \hldef{= t.breaks,} \hlkwc{labels} \hldef{=} \hlkwd{round}\hldef{(t.breaks,} \hlnum{2}\hldef{),}
+                     \hlkwc{sec.axis} \hldef{=} \hlkwd{sec_axis}\hldef{(}\hlopt{~} \hldef{.,}
+                                         \hlkwc{breaks} \hldef{= t.breaks,} \hlkwc{labels} \hldef{=} \hlkwd{round}\hldef{(xbar.breaks,} \hlnum{2}\hldef{),}
+                                         \hlkwc{name} \hldef{=} \hlsng{"Mean of Closer Responses"}\hldef{))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlsng{"t"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Density"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\end{knitrout}
+  
+  \item Question 4, part(b).
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Set t-statistic breaks and calculate corresponding x-bar breaks for Farther}
+\hldef{t.breaks} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{20}\hldef{,} \hlopt{-}\hlnum{10}\hldef{,} \hlnum{10}\hldef{,} \hlnum{20}\hldef{,}
+              \hlkwd{qt}\hldef{(}\hlnum{1} \hlopt{-} \hlnum{0.05}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{),}
+              \hlopt{-}\hlnum{7.779}\hldef{)}
+\hldef{xbar.breaks} \hlkwb{<-} \hldef{t.breaks} \hlopt{*} \hlkwd{sd}\hldef{(full.dat}\hlopt{$}\hldef{Farther)} \hlopt{/} \hlkwd{sqrt}\hldef{(}\hlkwd{length}\hldef{(full.dat}\hlopt{$}\hldef{Farther))}
+
+\hlcom{# Create a plot with t-distribution, resampled t-statistics, and p-value areas for Farther}
+\hlkwd{ggplot}\hldef{()} \hlopt{+}
+  \hlkwd{geom_line}\hldef{(}\hlkwc{data} \hldef{= t.dist.dat,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{y} \hldef{= ts,} \hlkwc{color} \hldef{=} \hlsng{"Null"}\hldef{))} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{<=} \hlkwd{qt}\hldef{(}\hlnum{0.05}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{)),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"Rejection Region"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.5}\hldef{)} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{>=} \hlnum{8.3024}\hldef{),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"p-value"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.25}\hldef{)} \hlopt{+}
+  \hlkwd{geom_density}\hldef{(}\hlkwc{data} \hldef{= resamples.Farther,}
+               \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= t.stat,} \hlkwc{color} \hldef{=} \hlsng{"Resampled"}\hldef{))} \hlopt{+}
+  \hlkwd{geom_hline}\hldef{(}\hlkwc{yintercept} \hldef{=} \hlnum{0}\hldef{)} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlsng{""}\hldef{,} \hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"black"}\hldef{,} \hlsng{"red"}\hldef{))} \hlopt{+}
+  \hlkwd{scale_fill_manual}\hldef{(}\hlsng{""}\hldef{,} \hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"lightblue"}\hldef{,} \hlsng{"yellow"}\hldef{))} \hlopt{+}
+  \hlkwd{theme_bw}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"bottom"}\hldef{)} \hlopt{+}
+  \hlkwd{ggtitle}\hldef{(}\hlsng{"T-Test for the Further Responses Population Mean"}\hldef{,}
+          \hlkwc{subtitle} \hldef{=} \hlkwd{bquote}\hldef{(H[}\hlnum{0}\hldef{]}\hlopt{:}\hldef{mu[X]} \hlopt{==} \hlnum{0} \hlopt{~} \hlsng{"vs"} \hlopt{~} \hldef{H[a]}\hlopt{:}\hldef{mu[X]} \hlopt{<} \hlnum{0}\hldef{))} \hlopt{+}
+  \hlkwd{scale_x_continuous}\hldef{(}\hlsng{"t"}\hldef{,}
+                     \hlkwc{breaks} \hldef{= t.breaks,} \hlkwc{labels} \hldef{=} \hlkwd{round}\hldef{(t.breaks,} \hlnum{2}\hldef{),}
+                     \hlkwc{sec.axis} \hldef{=} \hlkwd{sec_axis}\hldef{(}\hlopt{~} \hldef{.,}
+                                         \hlkwc{breaks} \hldef{= t.breaks,} \hlkwc{labels} \hldef{=} \hlkwd{round}\hldef{(xbar.breaks,} \hlnum{2}\hldef{),}
+                                         \hlkwc{name} \hldef{=} \hlsng{"Mean of Further Responses"}\hldef{))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlsng{"t"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Density"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-11-1} 
+\end{knitrout}
+  
+  \item Question 4, part(c).
+\begin{knitrout}\scriptsize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Set t-statistic breaks and calculate corresponding x-bar breaks for Difference}
+\hldef{t.breaks} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{20}\hldef{,} \hlopt{-}\hlnum{10}\hldef{,} \hlnum{10}\hldef{,} \hlnum{20}\hldef{,}
+              \hlkwd{qt}\hldef{(}\hlnum{1} \hlopt{-} \hlnum{0.05}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{),}
+              \hlnum{8.5109}\hldef{)}
+\hldef{xbar.breaks} \hlkwb{<-} \hldef{t.breaks} \hlopt{*} \hldef{t.breaks} \hlopt{*} \hlkwd{sd}\hldef{(full.dat}\hlopt{$}\hldef{Difference)} \hlopt{/} \hlkwd{sqrt}\hldef{(}\hlkwd{length}\hldef{(full.dat}\hlopt{$}\hldef{Difference))}
+
+\hlcom{# Create a plot with t-distribution, resampled t-statistics, and p-value areas for Difference}
+\hlkwd{ggplot}\hldef{()} \hlopt{+}
+  \hlkwd{geom_line}\hldef{(}\hlkwc{data} \hldef{= t.dist.dat,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{y} \hldef{= ts,} \hlkwc{color} \hldef{=} \hlsng{"Null"}\hldef{))} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{>=} \hlkwd{qt}\hldef{(}\hlnum{1} \hlopt{-} \hlnum{0.025}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{)),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"Rejection Region"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.5}\hldef{)} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{<=} \hlkwd{qt}\hldef{(}\hlnum{0.025}\hldef{,} \hlkwc{df} \hldef{=} \hlnum{24}\hldef{)),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"Rejection Region"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.5}\hldef{)} \hlopt{+}
+  \hlkwd{geom_ribbon}\hldef{(}\hlkwc{data} \hldef{=} \hlkwd{subset}\hldef{(t.dist.dat, x} \hlopt{>=} \hlnum{8.3024}\hldef{),}
+              \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= x,} \hlkwc{ymin} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{ymax} \hldef{= ts,} \hlkwc{fill} \hldef{=} \hlsng{"p-value"}\hldef{),}
+              \hlkwc{alpha} \hldef{=} \hlnum{0.25}\hldef{)} \hlopt{+}
+  \hlkwd{geom_density}\hldef{(}\hlkwc{data} \hldef{= resamples.Closer,}
+               \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= t.stat,} \hlkwc{color} \hldef{=} \hlsng{"Resampled"}\hldef{))} \hlopt{+}
+  \hlkwd{geom_hline}\hldef{(}\hlkwc{yintercept} \hldef{=} \hlnum{0}\hldef{)} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlsng{""}\hldef{,} \hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"black"}\hldef{,} \hlsng{"red"}\hldef{))} \hlopt{+}
+  \hlkwd{scale_fill_manual}\hldef{(}\hlsng{""}\hldef{,} \hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"lightblue"}\hldef{,} \hlsng{"yellow"}\hldef{))} \hlopt{+}
+  \hlkwd{theme_bw}\hldef{()} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"bottom"}\hldef{)} \hlopt{+}
+  \hlkwd{ggtitle}\hldef{(}\hlsng{"T-Test for the Difference Between ``Populations`` Population Mean"}\hldef{,}
+          \hlkwc{subtitle} \hldef{=} \hlkwd{bquote}\hldef{(H[}\hlnum{0}\hldef{]}\hlopt{:}\hldef{mu[X]} \hlopt{==} \hlnum{0} \hlopt{~} \hlsng{"vs"} \hlopt{~} \hldef{H[a]}\hlopt{:}\hldef{mu[X]} \hlopt{!=} \hlnum{0}\hldef{))} \hlopt{+}
+  \hlkwd{scale_x_continuous}\hldef{(}\hlsng{"t"}\hldef{,}
+                     \hlkwc{breaks} \hldef{= t.breaks,} \hlkwc{labels} \hldef{=} \hlkwd{round}\hldef{(t.breaks,} \hlnum{2}\hldef{),}
+                     \hlkwc{sec.axis} \hldef{=} \hlkwd{sec_axis}\hldef{(}\hlopt{~} \hldef{.,}
+                                         \hlkwc{breaks} \hldef{= t.breaks,} \hlkwc{labels} \hldef{=} \hlkwd{round}\hldef{(xbar.breaks,} \hlnum{2}\hldef{),}
+                                         \hlkwc{name} \hldef{=} \hlsng{"Mean of Difference Between Populations"}\hldef{))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlsng{"t"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Density"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\end{knitrout}
+  
+\end{enumerate}
+\end{enumerate}
+
+
+\bibliography{bibliography}
+\end{document}
