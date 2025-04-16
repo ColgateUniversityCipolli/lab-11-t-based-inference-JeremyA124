@@ -49,7 +49,7 @@ conduct a power analysis. How many observations would the researchers
 need to detect a moderate-to-large effect ($d=0.65$) when using 
 $\alpha=0.05$ and default power (0.80) for a two-sided one sample 
 $t$ test. \\
-\texttt{*Response: n should be 20/21.*}
+\texttt{*Response: The researchers would need 20/21 observations to detect a moderate to large effect for a two-sided one sample t-test.*}
 <<size="scriptsize">>=
 # Perform a power analysis for a one-sample t-test with a medium effect size (d = 0.65)
 # Desired power = 0.80, two-sided alternative hypothesis
@@ -67,7 +67,8 @@ Figure 2. Download the Excel file. Describe what you needed to
 do to collect the data for Figure 2(g). Note that you only need the 
 \texttt{closer\_vals} and \texttt{further\_vals}. Ensure to 
 \texttt{mutate()} the data to get a difference 
-(e.g., \texttt{closer\_vals - further\_vals}).
+(e.g., \texttt{closer\_vals - further\_vals}). \\
+\texttt{*Response: In order to collect the dataset required to do the analysis in the later sections, we need to get the closer values and farther values data spreadsheets from the orginal excel sheet and import them into our workspace. Furthermore, we also have to subtract these two datasets between eachother to get the difference between values..*}
 <<message=FALSE, size="scriptsize">>=
 # Load data from CSV files for "Closer" and "Farther" conditions
 Closer.dat <- read_csv("C_vals.csv")
@@ -100,7 +101,7 @@ full.dat <- tibble(
   that there is a difference between dopamine in the brains of
   young zebra finches when they sing further away compared to 
   closer to their adult song? \\
-\texttt{*Response: The data below suggests that there exists a difference in the brains of young zebra finches singing closer in contrast to singing further away, as the plot is more skewed towards greater dopamine when singing closer than lower dopamine when singing farther.*} \\
+\texttt{*Response: The data below suggests that there exists a difference in the brains of young zebra finches singing closer in contrast to singing further away, as the plot is more skewed towards greater dopamine when singing closer than lower dopamine when cosidering the difference.*} \\
 
   \texttt{Solution to a, b, and c:}
 <<message=FALSE, size="scriptsize", fig.height=3>>=
@@ -125,6 +126,7 @@ ggplot(data = plot.full.dat) +
   \item \textbf{Optional Challenge:} Can you reproduce Figure 2(g)?
   Note that the you can use \texttt{geom\_errorbar()} to plot
   the range created by adding the mean $\pm$ one standard deviation.
+
 <<message=FALSE, size="scriptsize", warning=FALSE, fig.height=5>>=
 # Calculate mean and standard deviation for 'Closer' and 'Farther', then filter the data
 plot.full.dat.error <- plot.full.dat %>%
@@ -152,12 +154,13 @@ ggplot(data = plot.full.dat) +
   geom_hline(yintercept = 0, linetype = "dashed") + # Horizontal line at y = 0
   labs(x = NULL, # Remove x-axis label
        y = expression(Delta*F/F~"(%)")) + # Y-axis label
-  ylim(c(-0.6, 0.4)) + # Set y-axis limits
+  scale_y_continuous(breaks = round(seq(-0.60, 0.40, by = 0.20), 1)) + # Set y-axis limits
   scale_x_discrete(limits = c("Farther", "Closer")) + # Set x-axis categories
-  annotate("segment", x = "Farther", y = 0.38, xend = "Closer", yend = 0.38, size = .8) + # Line annotation
-  annotate("text", x = 1.5, y = .4, label = "***", size = 4) # Text annotation 
+  scale_color_manual(values = c("Farther" = "red", "Closer" = "blue")) + 
+  annotate("segment", x = "Farther", y = 0.41, xend = "Closer", yend = 0.41, size = .8) + # Line annotation
+  annotate("text", x = 1.5, y = .43, label = "***", size = 4) # Text annotation 
 @
-  
+
 \end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONDUCT THE TESTS
@@ -169,7 +172,7 @@ like: ($t=23.99$, $p<0.0001$; $g=1.34$; 95\% CI: 4.43, 4.60).\\
 correction of their $p$-values. I'm waiting to hear back from them via email!
 \begin{enumerate}
   \item ``The close responses differed significantly from 0 ($p=1.63 \times 10^{-8}$).''\\
-\texttt{*Response: ($t=8.30$; $p<0.0001$; $g=1.61$; 95\% CI: 0.11, 0.19)*}
+\texttt{*Response: Since the data provided a p-value less than 0.0001, then we have resonable evidence to reject the null hypothesis (there is no chnage in dopamine levels). This means that the changes in dopamine levels for zebra finches with responses closer from the realized adult song are statistically discernable from the null hypothesis (no changes in dopamine levels). We also know that the effect size is large and that 95\% of percent chnages in dopamine levels range from 0.11 to 0.19 in the closer responses. ($t=8.30$; $p<0.0001$; $g=1.61$; 95\% CI: 0.11, 0.19)*}
 <<eval=FALSE, size="scriptsize">>=
 # Perform t-test for 'Closer' data, testing if the mean is 0 (for CI)
 t.test(full.dat$Closer,
@@ -186,7 +189,7 @@ hedges_g(full.dat$Closer)
 @
 
   \item ``The far responses differed significantly from 0 ($p=5.17 \times 10^{-8}$).''\\
-\texttt{*Response: ($t=-7.71$; $p<0.0001$; $g=-1.51$; 95\% CI: -0.25, -0.14)*}
+\texttt{*Response: Since the data provided a p-value less than 0.0001, then we have resonable evidence to reject the null hypothesis (there is no change in dopamine levels). This means that the changes in dopamine levels for zebra finches with responses farther from the realized adult song are statistically discernable from the null hypothesis (no changes in dopamine levels).We also know that the effect size is large and that 95\% of percent chnages in dopamine levels range from -0.25 to -0.14 in the farther responses. ($t=-7.71$; $p<0.0001$; $g=1.51$; 95\% CI: -0.25, -0.14)*}
 <<eval=FALSE, size="scriptsize">>=
 # Perform t-test for 'Farther' data, testing if the mean is 0 (for CI)
 t.test(full.dat$Farther,
@@ -203,7 +206,7 @@ hedges_g(full.dat$Farther)
 @
 
   \item ``The difference between populations was significant ($p=1.04 \times10^{-8}$).''\\
-\texttt{*Response: ($t=8.51$; $p<0.0001$; $g=1.65$; 95\% CI: 0.27, 0.44)*}
+\texttt{*Response: Since the data provided a p-value less than 0.0001, then we have resonable evidence to reject the null hypothesis (there is no change in dopamine levels). This means that the differences in dopamine levels for the two populations are statistically discernable from the null hypothesis (no changes in dopamine levels). We also know that the effect size is large and that 95\% of differences in percent changes within dopamine levels range from 0.27 to 0.44. ($t=8.51$; $p<0.0001$; $g=1.65$; 95\% CI: 0.27, 0.44)*}
 <<eval=FALSE, size="scriptsize">>=
 # Perform t-test for the 'Difference' data, testing if the mean is 0
 t.test(full.dat$Difference,

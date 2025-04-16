@@ -91,7 +91,7 @@ conduct a power analysis. How many observations would the researchers
 need to detect a moderate-to-large effect ($d=0.65$) when using 
 $\alpha=0.05$ and default power (0.80) for a two-sided one sample 
 $t$ test. \\
-\texttt{*Response: n should be 20/21.*}
+\texttt{*Response: The researchers would need 20/21 observations to detect a moderate to large effect for a two-sided one sample t-test.*}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -123,7 +123,8 @@ Figure 2. Download the Excel file. Describe what you needed to
 do to collect the data for Figure 2(g). Note that you only need the 
 \texttt{closer\_vals} and \texttt{further\_vals}. Ensure to 
 \texttt{mutate()} the data to get a difference 
-(e.g., \texttt{closer\_vals - further\_vals}).
+(e.g., \texttt{closer\_vals - further\_vals}). \\
+\texttt{*Response: In order to collect the dataset required to do the analysis in the later sections, we need to get the closer values and farther values data spreadsheets from the orginal excel sheet and import them into our workspace. Furthermore, we also have to subtract these two datasets between eachother to get the difference between values..*}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -160,7 +161,7 @@ do to collect the data for Figure 2(g). Note that you only need the
   that there is a difference between dopamine in the brains of
   young zebra finches when they sing further away compared to 
   closer to their adult song? \\
-\texttt{*Response: The data below suggests that there exists a difference in the brains of young zebra finches singing closer in contrast to singing further away, as the plot is more skewed towards greater dopamine when singing closer than lower dopamine when singing farther.*} \\
+\texttt{*Response: The data below suggests that there exists a difference in the brains of young zebra finches singing closer in contrast to singing further away, as the plot is more skewed towards greater dopamine when singing closer than lower dopamine when cosidering the difference.*} \\
 
   \texttt{Solution to a, b, and c:}
 \begin{knitrout}\scriptsize
@@ -190,6 +191,7 @@ do to collect the data for Figure 2(g). Note that you only need the
   \item \textbf{Optional Challenge:} Can you reproduce Figure 2(g)?
   Note that the you can use \texttt{geom\_errorbar()} to plot
   the range created by adding the mean $\pm$ one standard deviation.
+
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -219,15 +221,16 @@ do to collect the data for Figure 2(g). Note that you only need the
   \hlkwd{geom_hline}\hldef{(}\hlkwc{yintercept} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{linetype} \hldef{=} \hlsng{"dashed"}\hldef{)} \hlopt{+} \hlcom{# Horizontal line at y = 0}
   \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlkwa{NULL}\hldef{,} \hlcom{# Remove x-axis label}
        \hlkwc{y} \hldef{=} \hlkwd{expression}\hldef{(Delta}\hlopt{*}\hldef{F}\hlopt{/}\hldef{F}\hlopt{~}\hlsng{"(%)"}\hldef{))} \hlopt{+} \hlcom{# Y-axis label}
-  \hlkwd{ylim}\hldef{(}\hlkwd{c}\hldef{(}\hlopt{-}\hlnum{0.6}\hldef{,} \hlnum{0.4}\hldef{))} \hlopt{+} \hlcom{# Set y-axis limits}
+  \hlkwd{scale_y_continuous}\hldef{(}\hlkwc{breaks} \hldef{=} \hlkwd{round}\hldef{(}\hlkwd{seq}\hldef{(}\hlopt{-}\hlnum{0.60}\hldef{,} \hlnum{0.40}\hldef{,} \hlkwc{by} \hldef{=} \hlnum{0.20}\hldef{),} \hlnum{1}\hldef{))} \hlopt{+} \hlcom{# Set y-axis limits}
   \hlkwd{scale_x_discrete}\hldef{(}\hlkwc{limits} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Farther"}\hldef{,} \hlsng{"Closer"}\hldef{))} \hlopt{+} \hlcom{# Set x-axis categories}
-  \hlkwd{annotate}\hldef{(}\hlsng{"segment"}\hldef{,} \hlkwc{x} \hldef{=} \hlsng{"Farther"}\hldef{,} \hlkwc{y} \hldef{=} \hlnum{0.38}\hldef{,} \hlkwc{xend} \hldef{=} \hlsng{"Closer"}\hldef{,} \hlkwc{yend} \hldef{=} \hlnum{0.38}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{.8}\hldef{)} \hlopt{+} \hlcom{# Line annotation}
-  \hlkwd{annotate}\hldef{(}\hlsng{"text"}\hldef{,} \hlkwc{x} \hldef{=} \hlnum{1.5}\hldef{,} \hlkwc{y} \hldef{=} \hlnum{.4}\hldef{,} \hlkwc{label} \hldef{=} \hlsng{"***"}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{4}\hldef{)} \hlcom{# Text annotation }
+  \hlkwd{scale_color_manual}\hldef{(}\hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Farther"} \hldef{=} \hlsng{"red"}\hldef{,} \hlsng{"Closer"} \hldef{=} \hlsng{"blue"}\hldef{))} \hlopt{+}
+  \hlkwd{annotate}\hldef{(}\hlsng{"segment"}\hldef{,} \hlkwc{x} \hldef{=} \hlsng{"Farther"}\hldef{,} \hlkwc{y} \hldef{=} \hlnum{0.41}\hldef{,} \hlkwc{xend} \hldef{=} \hlsng{"Closer"}\hldef{,} \hlkwc{yend} \hldef{=} \hlnum{0.41}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{.8}\hldef{)} \hlopt{+} \hlcom{# Line annotation}
+  \hlkwd{annotate}\hldef{(}\hlsng{"text"}\hldef{,} \hlkwc{x} \hldef{=} \hlnum{1.5}\hldef{,} \hlkwc{y} \hldef{=} \hlnum{.43}\hldef{,} \hlkwc{label} \hldef{=} \hlsng{"***"}\hldef{,} \hlkwc{size} \hldef{=} \hlnum{4}\hldef{)} \hlcom{# Text annotation }
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 \end{knitrout}
-  
+
 \end{enumerate}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONDUCT THE TESTS
@@ -239,7 +242,7 @@ like: ($t=23.99$, $p<0.0001$; $g=1.34$; 95\% CI: 4.43, 4.60).\\
 correction of their $p$-values. I'm waiting to hear back from them via email!
 \begin{enumerate}
   \item ``The close responses differed significantly from 0 ($p=1.63 \times 10^{-8}$).''\\
-\texttt{*Response: ($t=8.30$; $p<0.0001$; $g=1.61$; 95\% CI: 0.11, 0.19)*}
+\texttt{*Response: Since the data provided a p-value less than 0.0001, then we have resonable evidence to reject the null hypothesis (there is no chnage in dopamine levels). This means that the changes in dopamine levels for zebra finches with responses closer from the realized adult song are statistically discernable from the null hypothesis (no changes in dopamine levels). We also know that the effect size is large and that 95\% of percent chnages in dopamine levels range from 0.11 to 0.19 in the closer responses. ($t=8.30$; $p<0.0001$; $g=1.61$; 95\% CI: 0.11, 0.19)*}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -260,7 +263,7 @@ correction of their $p$-values. I'm waiting to hear back from them via email!
 \end{knitrout}
 
   \item ``The far responses differed significantly from 0 ($p=5.17 \times 10^{-8}$).''\\
-\texttt{*Response: ($t=-7.71$; $p<0.0001$; $g=-1.51$; 95\% CI: -0.25, -0.14)*}
+\texttt{*Response: Since the data provided a p-value less than 0.0001, then we have resonable evidence to reject the null hypothesis (there is no change in dopamine levels). This means that the changes in dopamine levels for zebra finches with responses farther from the realized adult song are statistically discernable from the null hypothesis (no changes in dopamine levels).We also know that the effect size is large and that 95\% of percent chnages in dopamine levels range from -0.25 to -0.14 in the farther responses. ($t=-7.71$; $p<0.0001$; $g=1.51$; 95\% CI: -0.25, -0.14)*}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -281,7 +284,7 @@ correction of their $p$-values. I'm waiting to hear back from them via email!
 \end{knitrout}
 
   \item ``The difference between populations was significant ($p=1.04 \times10^{-8}$).''\\
-\texttt{*Response: ($t=8.51$; $p<0.0001$; $g=1.65$; 95\% CI: 0.27, 0.44)*}
+\texttt{*Response: Since the data provided a p-value less than 0.0001, then we have resonable evidence to reject the null hypothesis (there is no change in dopamine levels). This means that the differences in dopamine levels for the two populations are statistically discernable from the null hypothesis (no changes in dopamine levels). We also know that the effect size is large and that 95\% of differences in percent changes within dopamine levels range from 0.27 to 0.44. ($t=8.51$; $p<0.0001$; $g=1.65$; 95\% CI: 0.27, 0.44)*}
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
